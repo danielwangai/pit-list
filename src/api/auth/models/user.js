@@ -22,23 +22,23 @@ const UserSchema = new Schema({
   modifiedAt: {type: Date, default: Date.now() }
 });
 
-UserSchema.pre('save', (next) => {
-  let user = this;
-  if(!user.isModified('password')) next();
-  bcrypt.genSalt(salt, (err, salt) => {
-    if (err)  next(err)
-    bcrypt.hash(user.password, salt, null, (err, hash) => {
-      if (err) next(err);
-      user.password = hash;
-      next();
-    });
-  })
-})
+// UserSchema.pre('save', (next) => {
+//   let user = this;
+//   if(!user.isModified('password')) next();
+//   bcrypt.genSalt(salt, (err, salt) => {
+//     if (err)  next(err)
+//     bcrypt.hash(user.password, salt, null, (err, hash) => {
+//       if (err) next(err);
+//       user.password = hash;
+//       next();
+//     });
+//   })
+// })
 
 // email validation
-UserSchema.path('email').validate((email) => {
-  return regex.test(email);
-}, 'Invalid email format.')
+// UserSchema.path('email').validate((email) => {
+//   return regex.test(email);
+// }, 'Invalid email format.')
 
 const User = mongoose.model('User', UserSchema);
 export default User;
