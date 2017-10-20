@@ -55,9 +55,29 @@ const bucketlistsController = {
         status: "success",
         data: {
           bucketlists: bucketlists,
-          message: "You have no bucketlists currently."
+          message: "All your bucketlists fetched successfully."
         }
       })
+    })
+  },
+  getOneBucketlist: (req, res) => {
+    const currentUser = jwt.verify(req.headers['access-token'], process.env.SECRET_KEY);
+    Bucketlist.findOne({ _id: req.params.id, user: currentUser.data.id }, (err, bucketlist) => {
+      // if(err) { return res.status(500).json(err) }
+      if(err) {
+        return res.status(404).json({
+          status: "fail",
+          message: "Bucketlist not found."
+        })
+      } else {
+        return res.status(200).json({
+          status: "success",
+          data: {
+            bucketlist: bucketlist,
+            message: "Bucketlist fetched successfully."
+          }
+        })
+      }
     })
   }
 }

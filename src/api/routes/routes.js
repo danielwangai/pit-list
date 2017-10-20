@@ -17,4 +17,7 @@ router.route('/bucketlists')
   .post(bucketlistsController.createBucketlist)
   .get(bucketlistsController.all)
 
+router.route('/bucketlists/:id')
+  .get(bucketlistsController.getOneBucketlist)
+
 export default router;
