@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
 
-const schema = new mongoose.Schema;
-
-const itemSchema = schema({
+const Schema = new mongoose.Schema;
+const itemSchema = mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Item name is required.']

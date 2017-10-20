@@ -1,12 +1,6 @@
 import mongoose from 'mongoose';
 
-// import * as Item from '../../items';
-// // import User from '../../auth';
-// //
-// // console.log("test user\n\n", User);
-
 const Schema = mongoose.Schema;
-
 const bucketlistSchema = new Schema({
   name: {
     type: String,

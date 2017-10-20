@@ -2,9 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
 const Schema = mongoose.Schema;
-const regex = "!(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.";
-const salt = 10;
-
+const SALT_FACTOR = 10;
 const UserSchema = new Schema({
   username: {
     type: String,
@@ -22,18 +20,30 @@ const UserSchema = new Schema({
   modifiedAt: {type: Date, default: Date.now() }
 });
 
-// UserSchema.pre('save', (next) => {
-//   let user = this;
-//   if(!user.isModified('password')) next();
-//   bcrypt.genSalt(salt, (err, salt) => {
-//     if (err)  next(err)
-//     bcrypt.hash(user.password, salt, null, (err, hash) => {
-//       if (err) next(err);
-//       user.password = hash;
-//       next();
-//     });
-//   })
-// })
+UserSchema.pre('save', function(next) {
+  let user = this;
+  // only hash the password if it has been modified (or is new)
+  if (!user.isModified('password')) return next();
+  // generate a salt
+  bcrypt.genSalt(SALT_FACTOR, (err, salt) => {
+    if (err) return next(err);
+    // hash the password along with our new salt
+    bcrypt.hash(user.password, salt, function(err, hash) {
+      if (err) return next(err);
+      // override the cleartext password with the hashed one
+      user.password = hash;
+      next();
+    });
+  });
+});
+
+// password validation
+UserSchema.methods.validatePassword = (candidatePassword, cb) => {
+  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+    if (err) return cb(err);
+    cb(null, isMatch);
+  });
+};
 
 // email validation
 // UserSchema.path('email').validate((email) => {
