@@ -1,5 +1,9 @@
 import User from '../models/user';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+const saltRounds = 10;
+const secretKey = process.env.SECRET_KEY;
 
 const userController = {
   register: (req, res) => {
@@ -36,6 +40,40 @@ const userController = {
           message: "A user with a similar email exists."
         });
       }
+    })
+  },
+  login: (req, res) => {
+    return User.findOne(
+      {email: req.body.email},
+      (err, user) => {
+      if(err) { return res.status(500).json(err) }
+      if(!user) {
+        return res.status(404).send({
+          status: "fail",
+          message: 'User Not Found',
+        });
+      }
+      const validPassword = bcrypt.compareSync(
+        req.body.password, user.password
+      )
+      if(validPassword) {
+        const token = jwt.sign({
+          data: {
+            id: user._id,
+            username: user.firstName,
+            email: user.email
+          }
+        }, secretKey, {"expiresIn": 24*3600})
+        return res.status(200).json(Object.assign({}, {
+          id: user._id,
+          username: user.username,
+          email: user.email
+        }, {token}));
+      }
+      return res.status(401).send({
+        status: "fail",
+        message: "Invalid password"
+      });
     })
   }
 }

@@ -2,6 +2,7 @@ import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
 // import routers
 import router from './src/api/routes/routes';
@@ -22,6 +23,9 @@ db.once('open', () => {
 db.on('error', (err) => {
   console.log("DB ERROR\n\n", err);
 })
+
+// load environment variables.
+dotenv.load();
 
 // mongoose.Promise = global.Promise;
 const app = express();
