@@ -19,5 +19,6 @@ router.route('/bucketlists')
 
 router.route('/bucketlists/:id')
   .get(bucketlistsController.getOneBucketlist)
+  .put(bucketlistsController.updateBucketlist)
 
 export default router;

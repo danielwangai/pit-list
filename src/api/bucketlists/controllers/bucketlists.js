@@ -79,6 +79,36 @@ const bucketlistsController = {
         })
       }
     })
+  },
+  updateBucketlist: (req, res) => {
+    const currentUser = jwt.verify(req.headers['access-token'], process.env.SECRET_KEY);
+    if(!req.body.name || !req.body.description) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Name and description cannot be empty on udpate."
+      })
+    } else {
+      Bucketlist.findOne({ _id: req.params.id, user: currentUser.data.id }, (err, bucketlist) => {
+        if(err) {
+          return res.status(404).json({
+            status: "fail",
+            message: "Bucketlist not found."
+          })
+        }
+        bucketlist.set({ name: req.body.name})
+        bucketlist.set({ description: req.body.description})
+        bucketlist.save((err, bucketlist) => {
+          if(err) { return res.status(500).json(err) }
+          return res.status(200).json({
+            status: "success",
+            data: {
+              bucketlist: bucketlist,
+              message: "Bucketlist updated successfully."
+            }
+          })
+        })
+      })
+    }
   }
 }
 
