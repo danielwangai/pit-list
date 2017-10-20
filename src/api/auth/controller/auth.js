@@ -26,7 +26,7 @@ const userController = {
             res.status(500).json(err)
           } else {
             return res.status(201).json({
-              status: "fail",
+              status: "success",
               data: {
                 user: user,
                 message: "Account successfully created."

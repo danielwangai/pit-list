@@ -10,7 +10,7 @@ const Authenticate = {
       });
     }
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
-      if (error) {
+      if (err) {
         return res.status(401).json({
           status: 'fail',
           message: 'Failed to authenticate.'
