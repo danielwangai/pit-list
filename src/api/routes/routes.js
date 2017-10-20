@@ -15,5 +15,6 @@ router.use('/', Authenticate.loginRequired)
 
 router.route('/bucketlists')
   .post(bucketlistsController.createBucketlist)
+  .get(bucketlistsController.all)
 
 export default router;

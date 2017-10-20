@@ -37,6 +37,28 @@ const bucketlistsController = {
         })
       }
     })
+  },
+  all: (req, res) => {
+    const currentUser = jwt.verify(req.headers['access-token'], process.env.SECRET_KEY);
+    Bucketlist.find({ user: currentUser.data.id }, (err, bucketlists) => {
+      if(err) { return res.status(500).json(err) }
+      if(!bucketlists.length) {
+        return res.status(404).json({
+          status: "fail",
+          data: {
+            bucketlists: null,
+            message: "You have no bucketlists currently."
+          }
+        })
+      }
+      return res.status(200).json({
+        status: "success",
+        data: {
+          bucketlists: bucketlists,
+          message: "You have no bucketlists currently."
+        }
+      })
+    })
   }
 }
 
