@@ -109,6 +109,21 @@ const bucketlistsController = {
         })
       })
     }
+  },
+  deleteBucketlist: (req, res) => {
+    const currentUser = jwt.verify(req.headers['access-token'], process.env.SECRET_KEY);
+    Bucketlist.findOneAndRemove({ _id: req.params.id, user: currentUser.data.id }, (err, bucketlist) => {
+      if(err) {
+        return res.status(404).json({
+          status: "fail",
+          message: "Bucketlist not found."
+        })
+      }
+      return res.status(404).json({
+        status: "success",
+        message: "Bucketlist deleted successfully."
+      })
+    })
   }
 }
 

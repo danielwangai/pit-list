@@ -60,7 +60,7 @@ const userController = {
         const token = jwt.sign({
           data: {
             id: user._id,
-            username: user.firstName,
+            username: user.username,
             email: user.email
           }
         }, secretKey, {"expiresIn": 24*3600})

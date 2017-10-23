@@ -20,5 +20,6 @@ router.route('/bucketlists')
 router.route('/bucketlists/:id')
   .get(bucketlistsController.getOneBucketlist)
   .put(bucketlistsController.updateBucketlist)
+  .delete(bucketlistsController.deleteBucketlist)
 
 export default router;
