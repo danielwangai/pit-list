@@ -2,6 +2,7 @@ import express from 'express';
 import Authenticate from './authenticate';
 import userController from '../auth/controller/auth';
 import bucketlistsController from '../bucketlists/controllers/bucketlists';
+import itemsController from '../items/controllers/items';
 
 const router = express.Router();
 
@@ -21,5 +22,11 @@ router.route('/bucketlists/:id')
   .get(bucketlistsController.getOneBucketlist)
   .put(bucketlistsController.updateBucketlist)
   .delete(bucketlistsController.deleteBucketlist)
+
+router.route('/bucketlists/:id/items')
+  .post(itemsController.createItem)
+
+router.route('/bucketlists/:id/items/:itemId')
+  .get(itemsController.fetchSingleItem)
 
 export default router;

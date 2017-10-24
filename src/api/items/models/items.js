@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
+import Bucketlist from '../../bucketlists/models/bucketlist';
 
-const Schema = new mongoose.Schema;
+const Schema = mongoose.Schema;
 const itemSchema = mongoose.Schema({
   name: {
     type: String,
