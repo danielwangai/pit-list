@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 const saltRounds = 10;
 const secretKey = process.env.SECRET_KEY;
 
-const userController = {
+const usersController = {
   register: (req, res) => {
     console.log("REQUEST\n\n", req.body);
     if(!req.body.username || !req.body.email || !req.body.password) {
@@ -78,4 +78,4 @@ const userController = {
   }
 }
 
-export default userController;
+export default usersController;

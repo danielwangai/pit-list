@@ -1,1 +1,3 @@
-export * from items;
+import Item from './items';
+
+export default Item;

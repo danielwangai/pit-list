@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import Item from '../models/items';
-import Bucketlist from '../../bucketlists/models/bucketlist';
+import {Bucketlist} from '../../bucketlists';
 
 const itemsController = {
   createItem: (req, res) => {
@@ -27,7 +27,7 @@ const itemsController = {
           bucketlist.items.push(item)
           bucketlist.save()
           return res.status(201).json({
-            status: "fail",
+            status: "success",
             data: {
               item: item,
               message: "Item was successfully created."
@@ -37,8 +37,22 @@ const itemsController = {
       })
     })
   },
+  fetchAllItems: (req, res) => {
+    Bucketlist.findOne({_id: req.params.id}, (err, bucketlist) => {
+      if(err) { return res.status(404).json({ status: "fail", message: "Bucketlist not found."})}
+      Item.find({bucketlist: req.params.id}, (err, items) => {
+        if(err) { return res.status(404).json({ status: "fail", message: "Items not found."})}
+        return res.status(200).json({
+          status: "success",
+          data: {
+            item: items,
+            message: "Items successfully fetched."
+          }
+        })
+      })
+    })
+  },
   fetchSingleItem: (req, res) => {
-    console.log("\n\nItems post\n\n", req.body);
     Bucketlist.findOne({_id: req.params.id}, (err, bucketlist) => {
       if(err) { return res.status(404).json({ status: "fail", message: "Bucketlist not found."})}
       Item.findOne({_id: req.params.itemId}, (err, item) => {
@@ -53,6 +67,26 @@ const itemsController = {
       })
     })
   }
+  // ,
+  // updateItem: (req, res) => {
+  //   Bucketlist.findOne({_id: req.params.id}, (err, bucketlist) => {
+  //     if(err) { return res.status(404).json({ status: "fail", message: "Bucketlist not found."})}
+  //     Item.findOne({_id: req.params.itemId}, (err, item) => {
+  //       if(err) { return res.status(404).json({ status: "fail", message: "Item not found."})}
+  //       result = []
+  //       expectedKeys = ["name"]
+  //       payloadKeys = Object.keys(req.params);
+  //
+  //       return res.status(200).json({
+  //         status: "fail",
+  //         data: {
+  //           item: item,
+  //           message: "Item was successfully fetched."
+  //         }
+  //       })
+  //     })
+  //   })
+  // }
 }
 
 export default itemsController;

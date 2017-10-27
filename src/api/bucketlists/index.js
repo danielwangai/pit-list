@@ -1,6 +1,12 @@
+import Bucketlist from './models';
+import bucketlistsController from './controllers';
+
+// export const Bucketlist = {
+//     BucketlistModel,
+//     bucketlistsController
+// }
+
 // import Bucketlist from './models/bucketlist';
-import {Bucketlist} from './models/bucketlist.js'
+// import bucketlistsController from './controllers/bucketlists';
 
-const bucket = require('./models/buc')
-
-console.log("Bucketlist\n\n", Bucketlist)
+export {Bucketlist, bucketlistsController};

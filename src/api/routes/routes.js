@@ -1,16 +1,16 @@
 import express from 'express';
 import Authenticate from './authenticate';
-import userController from '../auth/controller/auth';
-import bucketlistsController from '../bucketlists/controllers/bucketlists';
-import itemsController from '../items/controllers/items';
+import {usersController} from '../auth';
+import {bucketlistsController} from '../bucketlists'
+import {itemsController} from '../items';
 
 const router = express.Router();
 
 router.route('/register')
-  .post(userController.register)
+  .post(usersController.register)
 
 router.route('/login')
-  .post(userController.login)
+  .post(usersController.login)
 
 router.use('/', Authenticate.loginRequired)
 
@@ -25,6 +25,7 @@ router.route('/bucketlists/:id')
 
 router.route('/bucketlists/:id/items')
   .post(itemsController.createItem)
+  .get(itemsController.fetchAllItems)
 
 router.route('/bucketlists/:id/items/:itemId')
   .get(itemsController.fetchSingleItem)

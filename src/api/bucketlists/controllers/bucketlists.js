@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import Bucketlist from '../models/bucketlist';
+import Bucketlist from '../models';
 
 const bucketlistsController = {
   createBucketlist: (req, res) => {
@@ -78,7 +78,7 @@ const bucketlistsController = {
           }
         })
       }
-    })
+  })
   },
   updateBucketlist: (req, res) => {
     const currentUser = jwt.verify(req.headers['access-token'], process.env.SECRET_KEY);
