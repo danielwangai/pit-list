@@ -6,6 +6,26 @@ const saltRounds = 10;
 const secretKey = process.env.SECRET_KEY;
 
 const usersController = {
+  listUsers: (req, res) => {
+    User.find({}, (req, users) => {
+      if(!users.length) {
+        return res.status(404).json({
+          status: "fail",
+          data: {
+            users: null,
+            message: "Users not found."
+          }
+        })
+      }
+      return res.status(200).json({
+        status: "fail",
+        data: {
+          users: users,
+          message: "Users not found."
+        }
+      })
+    })
+  },
   register: (req, res) => {
     console.log("REQUEST\n\n", req.body);
     if(!req.body.username || !req.body.email || !req.body.password) {

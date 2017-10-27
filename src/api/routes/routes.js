@@ -12,7 +12,10 @@ router.route('/register')
 router.route('/login')
   .post(usersController.login)
 
-router.use('/', Authenticate.loginRequired)
+router.route('/users')
+  .get(usersController.listUsers)
+
+// router.use('/', Authenticate.loginRequired)
 
 router.route('/bucketlists')
   .post(bucketlistsController.createBucketlist)

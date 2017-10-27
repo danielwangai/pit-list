@@ -4,17 +4,15 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import bluebird from 'bluebird';
+import cors from 'cors';
 
 // import routers
 import router from './src/api/routes/routes';
 
-import User from './src/api/auth/models/user.js';
-import Bucketlist from './src/api/bucketlists/models/bucketlist';
-
 mongoose.Promise = bluebird;
 
+const PORT = process.env.PORT || 5000;
 mongoose.connect(process.env.MONGOLAB_URI);
-// mongoose.connect('mongodb://localhost/pitlist');
 
 let db = mongoose.connection;
 
@@ -30,19 +28,19 @@ db.on('error', (err) => {
 // load environment variables.
 dotenv.load();
 
-// mongoose.Promise = global.Promise;
 const app = express();
 app.use(logger('dev'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(cors());
 app.use('/api/v1', router);
 
-console.log("new routes\n\n", router)
+console.log("new routes\n\n", router);
 
-app.listen(3000, ()=>{
-  console.log("Server is ok at "+ 3000)
+app.listen(PORT, ()=>{
+  console.log("Server is ok at "+ PORT);
 })
 
 export default app;
