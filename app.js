@@ -3,6 +3,7 @@ import logger from 'morgan';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import bluebird from 'bluebird';
 
 // import routers
 import router from './src/api/routes/routes';
@@ -10,8 +11,10 @@ import router from './src/api/routes/routes';
 import User from './src/api/auth/models/user.js';
 import Bucketlist from './src/api/bucketlists/models/bucketlist';
 
+mongoose.Promise = bluebird;
 
-mongoose.connect('mongodb://localhost/pitlist');
+mongoose.connect(process.env.MONGOLAB_URI);
+// mongoose.connect('mongodb://localhost/pitlist');
 
 let db = mongoose.connection;
 
@@ -29,6 +32,7 @@ dotenv.load();
 
 // mongoose.Promise = global.Promise;
 const app = express();
+app.use(logger('dev'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
